@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SLAM App — SHE Manager Dashboard Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #666666;       /* Medium gray for structural accents */
+  --teal-dark: #222222;  /* Dark gray/black for primary headers */
+  --teal-pale: #F2F2F2;  /* Very light gray for highlight boxes */
+  --accent: #000000;     /* Pure black for high-contrast accents */
+  --white: #FFFFFF;
+  --offwhite: #F9F9F9;   /* Subtle background for alternating rows/code */
+  --text: #000000;       /* Pure black for maximum readability */
+  --mid: #333333;        /* Dark gray for standard paragraph text */
+  --muted: #666666;      /* Medium gray for secondary/meta text */
+  --border: #CCCCCC;     /* Visible but subtle gray borders */
+  --red: #333333;
+  --green: #333333;
+  --amber: #555555;
+}
+
+* {margin:0; padding:0; box-sizing:border-box;}
+body {font-family:'Montserrat',sans-serif; background:#FFFFFF; color:var(--text); font-size:10pt; line-height:1.75;}
+.page {max-width:820px; margin:0 auto; background:var(--white); box-shadow:none; border:1px solid var(--border);}
+
+/* Cover - Inverted for Ink-Saving Print */
+.cover {background:var(--white); overflow:hidden; position:relative; border-bottom:3px solid var(--teal-dark);}
+.cover-accent {height:5px; background:var(--teal-dark);}
+.cover-inner {padding:3rem 3.5rem 2.8rem;}
+.cover-tag {display:inline-block; background:var(--offwhite); color:var(--text); border:1px solid var(--border); font-size:0.58rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; padding:0.28rem 0.7rem; margin-bottom:1rem;}
+.cover-h {font-size:2rem; font-weight:900; color:var(--text); line-height:1.1; margin-bottom:0.6rem;}
+.cover-h span {color:var(--muted);}
+.cover-sub {font-size:0.78rem; color:var(--mid); line-height:1.65; max-width:440px; margin-bottom:2.2rem;}
+.cover-meta {display:flex; flex-wrap:wrap; gap:1.8rem; border-top:1px solid var(--border); padding-top:1.4rem;}
+.meta-lbl {font-size:0.5rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted);}
+.meta-val {font-size:0.72rem; font-weight:700; color:var(--text);}
+
+/* Body & Sections */
+.body {padding:3rem 3.5rem;}
+.sec {margin-bottom:2.5rem;}
+.sec-head {display:flex; align-items:center; gap:0.85rem; margin-bottom:1.1rem; padding-bottom:0.7rem; border-bottom:1.5px solid var(--border);}
+.sec-num {width:30px; height:30px; background:var(--teal-dark); color:var(--white); font-size:0.62rem; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+.sec-title {font-size:1.05rem; font-weight:800; color:var(--text);}
+p {margin-bottom:0.85rem; color:var(--mid); font-size:9.5pt;}
+strong {color:var(--text); font-weight:700;}
+.hl {background:var(--teal-pale); border-left:3px solid var(--teal-dark); padding:0.85rem 1.1rem; margin:1rem 0; font-size:9pt; color:var(--text); font-weight:500; line-height:1.65;}
+
+/* Tables */
+.tbl {width:100%; border-collapse:collapse; margin:1.1rem 0; font-size:8.5pt;}
+.tbl th {background:var(--offwhite); color:var(--text); border-bottom:2px solid var(--teal-dark); border-top:1px solid var(--teal-dark); font-size:0.55rem; font-weight:800; letter-spacing:0.15em; text-transform:uppercase; padding:0.65rem 0.9rem; text-align:left;}
+.tbl td {padding:0.65rem 0.9rem; border-bottom:1px solid var(--border); color:var(--mid); vertical-align:top; font-weight:500; line-height:1.55;}
+.tbl tr:last-child td {border-bottom:none;}
+.tbl tr:nth-child(even) td {background:var(--offwhite);}
+.tbl td strong {color:var(--text);}
+
+/* Code & Architecture Boxes */
+.code {background:var(--offwhite); color:var(--text); border:1px solid var(--border); font-family:'Courier New',monospace; font-size:8pt; padding:0.85rem 1rem; border-radius:3px; margin:0.7rem 0; overflow-x:auto; line-height:1.7;}
+.code-label {font-size:0.55rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:0.3rem;}
+.arch-box {border:1.5px solid var(--border); border-radius:4px; padding:0.85rem 1rem; margin:0.5rem 0; display:flex; align-items:center; gap:1rem;}
+.arch-icon {font-size:1.4rem; flex-shrink:0;}
+.arch-name {font-size:0.82rem; font-weight:800; color:var(--text);}
+.arch-desc {font-size:8pt; color:var(--mid);}
+.arch-tag {margin-left:auto; font-size:0.52rem; font-weight:700; letter-spacing:0.1em; background:var(--offwhite); color:var(--text); border:1px solid var(--border); padding:0.12rem 0.4rem; border-radius:2px; white-space:nowrap;}
+
+/* Footer & Print Settings */
+.doc-footer {background:var(--white); border-top:2px solid var(--teal-dark); padding:1rem 3.5rem; display:flex; justify-content:space-between; align-items:center;}
+.df-l {font-size:0.6rem; font-weight:700; color:var(--muted); letter-spacing:0.1em;}
+.df-r {font-size:0.6rem; font-weight:700; color:var(--text);}
+.pb {page-break-before:always;}
+@media print {
+  body {background:#fff;}
+  .page {border:none; max-width:100%;}
+}
+</style>
+
+</head>
+<body>
+<div class="page">
+
+<div class="cover">
+  <div class="cover-accent"></div>
+  <div class="cover-inner">
+    <div class="cover-tag">SHE Manager Guide · Dashboard Operations</div>
+    <div class="cover-h">SLAM App<br><span>Dashboard Guide</span></div>
+    <div class="cover-sub">A complete reference guide for SHE Managers, Shift Bosses, and Supervisors using the SHE management dashboard to monitor the SLAM re-entry pilot at Unki Mine.</div>
+    <div class="cover-meta">
+      <div><div class="meta-lbl">Applies To</div><div class="meta-val">SHE Manager · Shift Boss · Safety Officer · Admin</div></div>
+      <div><div class="meta-lbl">App Version</div><div class="meta-val">v1.0.0 — Pilot</div></div>
+      <div><div class="meta-lbl">Access Level</div><div class="meta-val">Supervisor roles and above</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="body">
+
+  <!-- 01 ACCESSING DASHBOARD -->
+  <div class="sec">
+    <div class="sec-head"><div class="sec-num">01</div><div class="sec-title">Accessing the Dashboard</div></div>
+    <p>The SHE dashboard is a separate URL from the miner app. Open it in any browser on your phone, tablet, or laptop. Sign in with your badge ID and password. Your role must be one of: <strong>SHE Manager, Shift Boss, Safety Officer, Section Manager, or Admin</strong>. Miner accounts cannot access the dashboard.</p>
+    <div class="hl"><strong>Recommended practice during the pilot:</strong> Open the dashboard at the start of every shift and keep it open on a surface computer or your phone throughout. The Live tracking tab refreshes automatically every 30 seconds. You will see every active miner, their current phase, gas readings, and zone without asking anyone.</div>
+  </div>
+
+  <!-- 02 DASHBOARD TABS -->
+  <div class="sec">
+    <div class="sec-head"><div class="sec-num">02</div><div class="sec-title">Dashboard Tabs — What Each One Does</div></div>
+
+    <div class="tab-card">
+      <div class="tab-head"><span class="tab-icon">📊</span><span class="tab-name">Overview</span><span class="tab-role">Daily Summary</span></div>
+      <div class="tab-body">
+        <p>Your starting point. Shows today's stats at a glance: total submissions, completed today, aborted re-entries, near misses, and timer exceedances. If the Timer Exceeded count is above zero, investigate immediately.</p>
+      </div>
+    </div>
+
+    <div class="tab-card">
+      <div class="tab-head"><span class="tab-icon">📋</span><span class="tab-name">Submissions</span><span class="tab-role">Full Procedure Records</span></div>
+      <div class="tab-body">
+        <p>Every completed and aborted re-entry procedure. Filter by date range, section, or status. Tap any record to see full detail — gas readings, crew members, ground observations, photos, supervisor name, and duration. Export individual records as PDF for formal reporting. Download all records as CSV for analysis.</p>
+        <ul>
+          <li><strong>Completed</strong> — full procedure submitted with supervisor sign-off</li>
+          <li><strong>Aborted (Unsafe Gas)</strong> — gas readings exceeded legal limits, procedure correctly stopped</li>
+          <li>Records with <strong>⚠ Timer Exceeded</strong> in the detail view exceeded the 30-minute re-entry limit</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tab-card">
+      <div class="tab-head"><span class="tab-icon">📡</span><span class="tab-name">Live Tracking</span><span class="tab-role">Real-Time Underground View</span></div>
+      <div class="tab-body">
+        <p>Shows every miner currently in progress — updated every 30 seconds automatically. For each active miner you can see their current phase, live gas readings colour-coded green or red, zone, and time elapsed. Any miner who has exceeded 30 minutes underground is highlighted in red with a badge showing how many minutes over the limit.</p>
+        <ul>
+          <li>If a miner shows <strong>red gas chips</strong> — contact the Shift Boss for that section immediately</li>
+          <li>If a miner shows <strong>⚠ EXCEEDED</strong> — radio the section, confirm miner is withdrawing</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tab-card">
+      <div class="tab-head"><span class="tab-icon">🆘</span><span class="tab-name">SOS Alerts</span><span class="tab-role">Emergency Response</span></div>
+      <div class="tab-body">
+        <p>Every SOS alert triggered underground appears here immediately with officer name, badge ID, zone, section, and time. Active alerts are shown in red. Tap any alert to open the resolve workflow — add resolution notes and mark resolved once the situation is under control.</p>
+        <div class="danger"><strong>An SOS alert requires immediate action.</strong> Do not wait. Contact the section Shift Boss, initiate emergency response procedures, and document your response in the resolve notes on the dashboard.</div>
+      </div>
+    </div>
+
+    <div class="tab-card">
+      <div class="tab-head"><span class="tab-icon">🪨</span><span class="tab-name">Ground Alerts</span><span class="tab-role">FOG Light Red Incidents</span></div>
+      <div class="tab-body">
+        <p>Every instance where a miner reported a RED FOG light in Phase 3. These are automatically escalated to Rock Engineering. Active ground alerts appear in red. The resolve workflow requires Rock Engineering confirmation notes before an alert can be cleared.</p>
+        <ul>
+          <li>Only resolve a ground alert after Rock Engineering has physically inspected the area</li>
+          <li>Document the Rock Engineering representative's name and findings in the resolution notes</li>
+          <li>The section must remain barricaded until the alert is formally resolved</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tab-card">
+      <div class="tab-head"><span class="tab-icon">⚠</span><span class="tab-name">Near Misses</span><span class="tab-role">Hazard Intelligence</span></div>
+      <div class="tab-body">
+        <p>All near-miss reports submitted by miners during re-entry procedures. Filter by incident type, severity, and section. Use this data to identify recurring hazards across sections and inform your weekly safety talk topics.</p>
+      </div>
+    </div>
+
+    <div class="tab-card">
+      <div class="tab-head"><span class="tab-icon">📈</span><span class="tab-name">Analytics</span><span class="tab-role">Trends &amp; Compliance</span></div>
+      <div class="tab-body">
+        <p>Three analytical views for the SHE Manager:</p>
+        <ul>
+          <li><strong>Gas Trends</strong> — average daily gas readings per gas type over 30 days. Filter by section. A rising CO trend across multiple days indicates a ventilation issue before it becomes dangerous.</li>
+          <li><strong>Submission Volume</strong> — daily completed vs aborted procedures. Low completion rate on a given day needs investigation.</li>
+          <li><strong>Missed Re-Entry Detection</strong> — last 14 days showing submission counts per section per day. Days with zero records are flagged in amber. These are potential compliance gaps.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tab-card">
+      <div class="tab-head"><span class="tab-icon">📋</span><span class="tab-name">Handovers</span><span class="tab-role">Shift-to-Shift Knowledge</span></div>
+      <div class="tab-body">
+        <p>All shift handover records submitted by Overseer Miners at end of shift. Filter by section and shift type. Tap any record to see full handover detail including outstanding hazards, gas concerns, panels to avoid, and equipment status. Review these at the start of your shift before sending crews underground.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 DAILY MONITORING ROUTINE -->
+  <div class="sec pb">
+    <div class="sec-head"><div class="sec-num">03</div><div class="sec-title">Recommended Daily Monitoring Routine</div></div>
+
+    <div class="action-card urgent">
+      <div class="action-icon">🌅</div>
+      <div><div class="action-title">Start of Shift — 10 minutes</div><div class="action-desc">Check Overview stats from previous shift. Review Handovers tab for your section. Check if any SOS or Ground Alerts are still active and unresolved. Open Live tab and keep it running on a device throughout the shift.</div></div>
+    </div>
+
+    <div class="action-card moderate">
+      <div class="action-icon">⏱</div>
+      <div><div class="action-title">During Shift — as needed</div><div class="action-desc">Monitor Live tab. Any miner showing red gas readings or timer exceedance needs immediate follow-up. If an SOS fires, respond to the alert on the dashboard immediately and initiate emergency response. New ground alerts must be escalated to Rock Engineering without delay.</div></div>
+    </div>
+
+    <div class="action-card routine">
+      <div class="action-icon">📊</div>
+      <div><div class="action-title">End of Shift — 15 minutes</div><div class="action-desc">Review today's submissions. Confirm all re-entries for the shift have a corresponding digital record. Check Near Misses tab for new reports. Export any submissions needed for formal records. Note any anomalies for the weekly review.</div></div>
+    </div>
+
+    <div class="action-card routine">
+      <div class="action-icon">📈</div>
+      <div><div class="action-title">Weekly — 30 minutes</div><div class="action-desc">Open Analytics tab. Check gas trends for any section showing upward movement. Review missed re-entry detection — any day with zero records needs explanation. Compile pilot progress notes for the pilot report. Share key observations with the Mine Captain.</div></div>
+    </div>
+  </div>
+
+  <!-- 04 PASSWORD RESET -->
+  <div class="sec">
+    <div class="sec-head"><div class="sec-num">04</div><div class="sec-title">Resetting a Miner's Password</div></div>
+    <p>If a miner cannot access the app because they forgot their password, you can reset it directly from the dashboard without involving IT.</p>
+    <p>Tap the <strong>🔑 key icon</strong> in the top-right corner of the dashboard. Enter the miner's badge ID and a temporary password. The temporary password is displayed on screen — send it to the miner via WhatsApp before their shift starts. They use it to sign in and can change it from the app settings.</p>
+    <div class="warn"><strong>Do this before the shift starts — never underground.</strong> If a miner cannot sign in once they are underground, they must fall back to the paper form for that shift. A miner should never skip the SLAM procedure because of an app login issue.</div>
+  </div>
+
+  <!-- 05 RESPONSE PROTOCOLS -->
+  <div class="sec">
+    <div class="sec-head"><div class="sec-num">05</div><div class="sec-title">Alert Response Protocols</div></div>
+    <table class="tbl">
+      <thead><tr><th>Alert Type</th><th>What It Means</th><th>Required Action</th><th>Timeframe</th></tr></thead>
+      <tbody>
+        <tr><td><strong>SOS Alert</strong></td><td>Miner has triggered emergency underground</td><td>Contact Shift Boss immediately. Initiate emergency response per mine emergency plan. Resolve alert on dashboard with full response notes.</td><td><strong>Immediate</strong></td></tr>
+        <tr><td><strong>Ground Alert — Red FOG</strong></td><td>Miner reported unsafe ground in Phase 3</td><td>Confirm section is barricaded. Contact Rock Engineering for inspection. Resolve only after Rock Engineering confirmation.</td><td><strong>Same shift</strong></td></tr>
+        <tr><td><strong>Timer Exceeded</strong></td><td>Miner exceeded 30-minute re-entry limit</td><td>Radio section to confirm miner has withdrawn. Review submission record for full context. Note in shift report.</td><td><strong>Within 30 minutes</strong></td></tr>
+        <tr><td><strong>Aborted Re-Entry</strong></td><td>Gas readings exceeded legal limits</td><td>Review gas readings in submission detail. Confirm ventilation was checked. Miner should not have re-entered until gas cleared.</td><td><strong>Same day</strong></td></tr>
+        <tr><td><strong>Missed Re-Entry (Analytics)</strong></td><td>No digital record for a shift where blast occurred</td><td>Verify paper form was completed. Investigate why app was not used. Note for pilot report.</td><td><strong>Next day</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 06 PILOT DATA COLLECTION -->
+  <div class="sec">
+    <div class="sec-head"><div class="sec-num">06</div><div class="sec-title">Pilot Data Collection — Your Role</div></div>
+    <p>Your observations during the pilot are as important as the database records. Please keep a simple daily log noting:</p>
+    <ul style="margin:0.5rem 0 0.85rem 1.2rem;">
+      <li style="margin-bottom:0.4rem;font-size:9pt;color:var(--mid);">How many re-entries were completed digitally vs paper only</li>
+      <li style="margin-bottom:0.4rem;font-size:9pt;color:var(--mid);">Any technical issues miners reported</li>
+      <li style="margin-bottom:0.4rem;font-size:9pt;color:var(--mid);">Miner feedback — positive and negative</li>
+      <li style="margin-bottom:0.4rem;font-size:9pt;color:var(--mid);">Any safety observations that the app captured that paper may have missed</li>
+      <li style="font-size:9pt;color:var(--mid);">Any compliance gaps the analytics tab flagged</li>
+    </ul>
+    <p>This qualitative data feeds directly into the pilot report and the recommendation to management on full deployment.</p>
+    <div class="hl">At the end of the 30-day pilot, distribute the anonymous miner feedback form to all participants. Their honest rating of the app versus paper is a critical part of the deployment decision.</div>
+  </div>
+
+</div>
+
+<div class="doc-footer">
+  <div class="df-l">Valterra Platinum · Unki Mine · SLAM App · SHE Manager Dashboard Guide · App v1.0.0</div>
+  <div class="df-r">Supervisor Access Only · Confidential</div>
+</div>
+
+</div>
+</body>
+</html>

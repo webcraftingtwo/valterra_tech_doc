@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SLAM App — Pilot Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #666666;       /* Medium gray */
+  --teal-dark: #222222;  /* Dark gray/black */
+  --teal-pale: #F2F2F2;  /* Very light gray */
+  --accent: #000000;     /* Pure black */
+  --white: #FFFFFF;
+  --offwhite: #F9F9F9;   /* Subtle background */
+  --text: #000000;       /* Pure black text */
+  --mid: #333333;        /* Dark gray */
+  --muted: #666666;      /* Medium gray */
+  --border: #CCCCCC;     /* Subtle gray borders */
+  --red: #000000;
+  --green: #333333;
+  --amber: #555555;
+}
+
+* {margin:0; padding:0; box-sizing:border-box;}
+body {font-family:'Merriweather',Georgia,serif; background:#FFFFFF; color:var(--text); font-size:10pt; line-height:1.75;}
+.page {max-width:820px; margin:0 auto; background:var(--white); box-shadow:none; border:1px solid var(--border);}
+
+/* Cover - Inverted for Ink-Saving Print */
+.cover {background:var(--white); overflow:hidden; position:relative; border-bottom:3px solid var(--teal-dark);}
+.cover-accent {height:5px; background:var(--teal-dark);}
+.cover-inner {padding:3rem 3.5rem 2.8rem; position:relative; z-index:2;}
+.cover-bg {position:absolute; right:-10px; top:50%; transform:translateY(-50%); font-family:'Montserrat',sans-serif; font-size:9rem; font-weight:900; color:rgba(0,0,0,0.04); pointer-events:none; line-height:1;}
+.cover-logo {display:flex; align-items:center; gap:0.7rem; margin-bottom:2.2rem;}
+.cover-name {font-family:'Montserrat',sans-serif; font-size:1rem; font-weight:800; color:var(--text); letter-spacing:0.1em; text-transform:uppercase;}
+.cover-plat {font-family:'Montserrat',sans-serif; font-size:0.48rem; font-weight:600; color:var(--muted); letter-spacing:0.35em; text-transform:uppercase;}
+.cover-tag {display:inline-block; background:var(--offwhite); color:var(--text); border:1px solid var(--border); font-family:'Montserrat',sans-serif; font-size:0.58rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; padding:0.28rem 0.7rem; margin-bottom:1rem;}
+.cover-h {font-family:'Montserrat',sans-serif; font-size:2rem; font-weight:900; color:var(--text); line-height:1.1; margin-bottom:0.6rem;}
+.cover-h span {color:var(--muted);}
+.cover-sub {font-family:'Montserrat',sans-serif; font-size:0.78rem; color:var(--mid); line-height:1.65; max-width:440px; margin-bottom:2.2rem;}
+.cover-meta {display:flex; flex-wrap:wrap; gap:1.8rem; border-top:1px solid var(--border); padding-top:1.4rem;}
+.meta-lbl {font-family:'Montserrat',sans-serif; font-size:0.5rem; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted);}
+.meta-val {font-family:'Montserrat',sans-serif; font-size:0.72rem; font-weight:700; color:var(--text);}
+
+/* Body & Sections */
+.body {padding:3rem 3.5rem;}
+.sec {margin-bottom:2.5rem;}
+.sec-head {display:flex; align-items:center; gap:0.85rem; margin-bottom:1.1rem; padding-bottom:0.7rem; border-bottom:1.5px solid var(--border);}
+.sec-num {width:30px; height:30px; background:var(--teal-dark); color:var(--white); font-family:'Montserrat',sans-serif; font-size:0.62rem; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+.sec-title {font-family:'Montserrat',sans-serif; font-size:1.05rem; font-weight:800; color:var(--text);}
+p {margin-bottom:0.85rem; color:var(--mid); font-size:9.5pt;}
+strong {color:var(--text); font-weight:700;}
+
+/* Highlights & Alerts */
+.hl {background:var(--teal-pale); border-left:3px solid var(--teal-dark); padding:0.85rem 1.1rem; margin:1rem 0; font-size:9pt; color:var(--text); font-family:'Montserrat',sans-serif; font-weight:500; line-height:1.65;}
+.warn {background:var(--offwhite); border:1px solid var(--border); border-left:4px solid var(--amber); padding:0.85rem 1.1rem; margin:1rem 0; font-size:9pt; color:var(--text); font-family:'Montserrat',sans-serif; font-weight:600; line-height:1.65;}
+
+/* Tables */
+.tbl {width:100%; border-collapse:collapse; margin:1.1rem 0; font-size:8.5pt;}
+.tbl th {background:var(--offwhite); color:var(--text); font-family:'Montserrat',sans-serif; font-size:0.55rem; font-weight:800; border-top:1px solid var(--teal-dark); border-bottom:2px solid var(--teal-dark); letter-spacing:0.15em; text-transform:uppercase; padding:0.65rem 0.9rem; text-align:left;}
+.tbl td {padding:0.65rem 0.9rem; border-bottom:1px solid var(--border); color:var(--mid); vertical-align:top; font-family:'Montserrat',sans-serif; font-weight:500; line-height:1.55;}
+.tbl tr:last-child td {border-bottom:none;}
+.tbl tr:nth-child(even) td {background:var(--offwhite);}
+.tbl td strong {color:var(--text);}
+
+/* Timeline */
+.timeline {position:relative; padding-left:2.2rem; margin:1.1rem 0;}
+.timeline::before {content:''; position:absolute; left:12px; top:14px; bottom:14px; width:1.5px; background:var(--border);}
+.tl-item {position:relative; margin-bottom:1.1rem;}
+.tl-dot {position:absolute; left:-2.2rem; top:0; width:26px; height:26px; border-radius:50%; background:var(--white); border:2px solid var(--teal-dark); display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-size:0.62rem; font-weight:800; color:var(--text);}
+.tl-dot.done {background:var(--text); border-color:var(--text); color:var(--white);}
+.tl-dot.active {background:var(--mid); border-color:var(--mid); color:var(--white);}
+.tl-title {font-family:'Montserrat',sans-serif; font-size:0.85rem; font-weight:800; color:var(--text); margin-bottom:0.2rem;}
+.tl-desc {font-family:'Montserrat',sans-serif; font-size:8.5pt; color:var(--mid); line-height:1.55;}
+.tl-time {font-family:'Montserrat',sans-serif; font-size:0.58rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-top:0.2rem;}
+
+/* Sign-off Table */
+.signoff-tbl {width:100%; border-collapse:collapse; margin:1rem 0;}
+.signoff-tbl th {background:var(--offwhite); color:var(--text); font-family:'Montserrat',sans-serif; font-size:0.55rem; font-weight:800; border-top:1px solid var(--teal-dark); border-bottom:2px solid var(--teal-dark); letter-spacing:0.15em; text-transform:uppercase; padding:0.65rem 0.9rem; text-align:left;}
+.signoff-tbl td {padding:0.8rem 0.9rem; border-bottom:1px solid var(--border); font-family:'Montserrat',sans-serif; font-size:9pt; color:var(--mid); vertical-align:top;}
+.sig-cell {height:45px; vertical-align:bottom; color:var(--muted); font-size:8pt;}
+
+/* Footer & Print Settings */
+.doc-footer {background:var(--white); border-top:2px solid var(--teal-dark); padding:1rem 3.5rem; display:flex; justify-content:space-between; align-items:center;}
+.df-l {font-family:'Montserrat',sans-serif; font-size:0.6rem; font-weight:700; color:var(--muted); letter-spacing:0.1em;}
+.df-r {font-family:'Montserrat',sans-serif; font-size:0.6rem; font-weight:700; color:var(--text);}
+.pb {page-break-before:always;}
+@media print {
+  body {background:#fff;}
+  .page {border:none; max-width:100%;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="cover">
+  <div class="cover-accent"></div>
+  <div class="cover-bg">PILOT</div>
+  <div class="cover-inner">
+    <div class="cover-logo">
+      <div>
+        <div class="cover-name">Valterra Platinum</div>
+        <div class="cover-plat">Unki Mine · Zimbabwe</div>
+      </div>
+    </div>
+    <div class="cover-tag">Pilot Proposal · Confidential · SHE Department</div>
+    <div class="cover-h">SLAM Re-Entry App<br><span>Pilot Programme</span></div>
+    <div class="cover-sub">A formal proposal to deploy a digital guided re-entry safety application across one section of Unki Mine, running in parallel with paper forms. Reference: UNK-MIN-MIN-PRO-0002 Version 6.0.</div>
+    <div class="cover-meta">
+      <div><div class="meta-lbl">Document Ref</div><div class="meta-val">UNK-SHE-SLAM-PILOT-001</div></div>
+      <div><div class="meta-lbl">Procedure Reference</div><div class="meta-val">UNK-MIN-MIN-PRO-0002 v6.0</div></div>
+      <div><div class="meta-lbl">App Version</div><div class="meta-val">v1.0.0</div></div>
+      <div><div class="meta-lbl">Pilot Duration</div><div class="meta-val">30 Days</div></div>
+      <div><div class="meta-lbl">Initiated By</div><div class="meta-val">Underground Construction · SHE Team</div></div>
+      <div><div class="meta-lbl">Status</div><div class="meta-val">Awaiting Approval</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="body">
+
+  <div class="sec">
+    <div class="sec-head"><div class="sec-num">01</div><div class="sec-title">Executive Summary</div></div>
+    <p>This document proposes a 30-day controlled pilot of the Valterra SLAM Re-Entry Application — a purpose-built digital safety system that guides Overseer Miners through the complete re-entry procedure following primary blasts at Unki Mine.</p>
+    <p>The application digitises Procedure UNK-MIN-MIN-PRO-0002 Version 6.0 in its entirety. A fully functional system has been developed, tested, and reviewed by senior engineering personnel who responded positively. The backend database is connected, the SHE management dashboard is operational, and the system has passed a 72-point technical audit.</p>
+    <div class="hl"><strong>Pilot objective:</strong> Validate the application in a real underground environment alongside existing paper forms for 30 days. Zero disruption to current operations — paper forms remain in use throughout. The pilot produces a data-driven recommendation on full mine-wide deployment.</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head"><div class="sec-num">02</div><div class="sec-title">Problem Statement</div></div>
+    <p>The current paper-based SLAM re-entry procedure presents compliance and safety risks that have been observed directly in underground operations. These are consistent failure modes of paper-based safety systems across the mining industry.</p>
+    <table class="tbl">
+      <thead><tr><th>Problem</th><th>Current Impact</th><th>Application Solution</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Retrospective completion</strong></td><td>Forms completed after the fact, not in real time</td><td>Each step confirmed live — next step is locked until current is done</td></tr>
+        <tr><td><strong>Critical steps skippable</strong></td><td>No enforcement mechanism under time pressure</td><td>Hard phase locking — critical steps cannot be bypassed by any means</td></tr>
+        <tr><td><strong>2-hour lapse unverified</strong></td><td>Checkbox — no time calculation, no enforcement</td><td>App calculates elapsed time automatically, hard-blocks if lapse not reached</td></tr>
+        <tr><td><strong>Gas readings unvalidated</strong></td><td>Readings recorded manually, no threshold alerts</td><td>Real-time validation against legal limits — retake and abort workflows enforced</td></tr>
+        <tr><td><strong>30-minute limit unenforceable</strong></td><td>Section 9.3 time limit cannot be actively monitored</td><td>Built-in countdown timer — exceedance flagged on miner screen and supervisor dashboard</td></tr>
+        <tr><td><strong>No centralised audit trail</strong></td><td>Records stored physically, inaccessible in real time</td><td>All submissions stored in cloud database, accessible live via SHE dashboard</td></tr>
+        <tr><td><strong>Near misses underreported</strong></td><td>High friction paper process, low completion rate</td><td>One-tap near-miss reporting accessible from any phase of the procedure</td></tr>
+        <tr><td><strong>No emergency response data</strong></td><td>Surface cannot locate underground personnel in emergency</td><td>SOS alert with zone, officer identity and timestamp sent instantly</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head"><div class="sec-num">03</div><div class="sec-title">Application Overview</div></div>
+    <p>The SLAM Re-Entry Application is a mobile-first web application accessible from any smartphone browser — no installation required. It was built directly from Procedure UNK-MIN-MIN-PRO-0002 Version 6.0.</p>
+    <table class="tbl">
+      <thead><tr><th>Phase</th><th>Section</th><th>Key Enforcement</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Phase 1</strong></td><td>9.1 Re-Entry Preparation</td><td>2-hour lapse automatically calculated and enforced. SCADA fan check, blasting board confirmation — all critical, all locked.</td></tr>
+        <tr><td><strong>Phase 2</strong></td><td>9.2 Waiting Place Management</td><td>Safety Talk topics recorded, crew members captured by name and role, PPE inspection, fit-for-duty confirmation.</td></tr>
+        <tr><td><strong>Phase 3</strong></td><td>9.3 Initial Re-Entry</td><td>30-minute countdown timer mandatory before advancing. Gas readings (CO/NO₂/O₂/H₂S) validated against legal limits. FOG light status — red triggers immediate ground alert and hard-blocks procedure.</td></tr>
+        <tr><td><strong>Phase 4</strong></td><td>9.4 Watering &amp; Barring Down</td><td>Water duration recorded. Ground conditions and observations captured. Photo evidence attached to record.</td></tr>
+        <tr><td><strong>Phase 5</strong></td><td>9.5 Explosives Search</td><td>Blasting licence holder confirmation. Misfire detection with escalation to PRO-0067 workflow.</td></tr>
+        <tr><td><strong>Sign-Off</strong></td><td>Supervisor Confirmation</td><td>Supervisor name and digital confirmation. Record locked, timestamped, and saved. Retained 5 years per Record Control Policy.</td></tr>
+      </tbody>
+    </table>
+    <p>The application includes offline mode — submissions queue locally when underground signal is unavailable and synchronise automatically when connectivity is restored. The system has a 15-second network timeout and automatically offers offline saving if the database is unreachable.</p>
+  </div>
+
+  <div class="sec pb">
+    <div class="sec-head"><div class="sec-num">04</div><div class="sec-title">Pilot Plan</div></div>
+    <p><strong>Proposed Section:</strong> One section confirmed by the Mine Captain and SHE Manager — recommended to be a section with an experienced and communicative Overseer Miner.</p>
+    <p><strong>Duration:</strong> 30 calendar days from training completion.</p>
+    <p><strong>Method:</strong> Parallel running — the digital procedure is completed for every re-entry alongside the paper form. No compliance obligations change. The pilot is additive only.</p>
+    <div class="warn"><strong>Important:</strong> Paper forms remain in use throughout the entire pilot period. Digital records are supplementary during the pilot phase. This ensures zero compliance risk regardless of pilot outcome.</div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot done">✓</div><div class="tl-title">Development &amp; Engineering Review</div><div class="tl-desc">Full application built covering all procedure phases. Database connected. Dashboard operational. 72-point technical audit passed. Reviewed by senior Valterra engineer — positive response received.</div><div class="tl-time">Complete</div></div>
+      <div class="tl-item"><div class="tl-dot active">★</div><div class="tl-title">Pilot Approval — Current Stage</div><div class="tl-desc">Formal sign-off from Mine Manager and SHE Manager. Section selection confirmed. This document submitted for review.</div><div class="tl-time">Awaiting Approval</div></div>
+      <div class="tl-item"><div class="tl-dot">3</div><div class="tl-title">Account Setup &amp; Training</div><div class="tl-desc">Accounts created for all participating miners. 2-hour practical training session at surface. Laminated quick-reference cards issued and posted at Lamp and Crush Building. Shift Boss and SHE Manager receive dashboard training.</div><div class="tl-time">Week 1 — Pre-Pilot</div></div>
+      <div class="tl-item"><div class="tl-dot">4</div><div class="tl-title">30-Day Active Pilot</div><div class="tl-desc">Digital procedure completed for every re-entry alongside paper forms. SHE Manager monitors dashboard in real time. Weekly check-in with Overseer Miner to collect feedback. Technical issues resolved within 24 hours.</div><div class="tl-time">Days 1–30</div></div>
+      <div class="tl-item"><div class="tl-dot">5</div><div class="tl-title">Data Review &amp; Pilot Report</div><div class="tl-desc">All digital records exported and analysed against success criteria. Feedback compiled. Formal recommendation submitted to Mine Manager — proceed to full deployment, extend pilot, or identify improvements.</div><div class="tl-time">Week 5–6</div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head"><div class="sec-num">05</div><div class="sec-title">Success Criteria</div></div>
+    <table class="tbl">
+      <thead><tr><th>Metric</th><th>Target</th><th>How Measured</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Procedure Completion Rate</strong></td><td>90% or more of re-entries completed digitally</td><td>Submission count vs estimated re-entry count from shift records</td></tr>
+        <tr><td><strong>Critical Step Compliance</strong></td><td>100% of submitted records — all critical steps confirmed</td><td>Database audit — critical steps cannot be bypassed by design</td></tr>
+        <tr><td><strong>Gas Reading Capture</strong></td><td>100% of completed submissions have all four gas readings</td><td>gas_readings table completeness check on dashboard</td></tr>
+        <tr><td><strong>Timer Compliance</strong></td><td>95% of submissions with re-entry duration under 30 minutes</td><td>reentry_duration_seconds and timer_exceeded column analysis</td></tr>
+        <tr><td><strong>Near Miss Reporting</strong></td><td>At least equal to paper-based near miss reports for same period</td><td>near_misses table count vs historical paper records</td></tr>
+        <tr><td><strong>User Acceptance</strong></td><td>70% or more of miners rate the app as easier or comparable to paper</td><td>Anonymous feedback form at end of pilot</td></tr>
+        <tr><td><strong>Zero Safety Incidents</strong></td><td>No safety incidents attributable to the pilot or application</td><td>Incident register review for pilot section and period</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head"><div class="sec-num">06</div><div class="sec-title">Resources Required</div></div>
+    <table class="tbl">
+      <thead><tr><th>Resource</th><th>Requirement</th><th>Cost</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Devices</strong></td><td>Miners' personal smartphones. App runs in any browser — no installation required.</td><td>Zero</td></tr>
+        <tr><td><strong>Connectivity</strong></td><td>Login and sync require connectivity. Offline mode handles underground gaps automatically.</td><td>Zero — existing infrastructure</td></tr>
+        <tr><td><strong>Training</strong></td><td>Single 2-hour practical session for all pilot participants at surface.</td><td>Staff time only</td></tr>
+        <tr><td><strong>Reference Cards</strong></td><td>One laminated A4 card per miner plus two posted at Lamp and Crush Building.</td><td>Printing only</td></tr>
+        <tr><td><strong>App Hosting</strong></td><td>Deployed on Netlify. Database on Supabase. Both on free tiers sufficient for pilot.</td><td>Zero</td></tr>
+        <tr><td><strong>Technical Support</strong></td><td>Developer available to resolve issues within 24 hours throughout pilot period.</td><td>Internal — no external cost</td></tr>
+      </tbody>
+    </table>
+    <div class="hl"><strong>Total estimated direct cost to Valterra: Zero.</strong> All infrastructure is built and running. The only cost is staff time during training — time they would spend completing paper forms regardless.</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head"><div class="sec-num">07</div><div class="sec-title">Approval &amp; Sign-Off</div></div>
+    <p>The following sign-off is required to proceed. Approval authorises the 30-day parallel running pilot in the confirmed section only. It does not commit Valterra to full deployment — that decision is made after reviewing the pilot report.</p>
+    <table class="signoff-tbl">
+      <thead><tr><th>Role</th><th>Name</th><th>Signature</th><th>Date</th></tr></thead>
+      <tbody>
+        <tr><td>Pilot Initiator</td><td>&nbsp;</td><td class="sig-cell">_______________________</td><td>&nbsp;</td></tr>
+        <tr><td>SHE Manager</td><td>&nbsp;</td><td class="sig-cell">_______________________</td><td>&nbsp;</td></tr>
+        <tr><td>Section Manager</td><td>&nbsp;</td><td class="sig-cell">_______________________</td><td>&nbsp;</td></tr>
+        <tr><td>Mine Captain</td><td>&nbsp;</td><td class="sig-cell">_______________________</td><td>&nbsp;</td></tr>
+        <tr><td>Mine Manager</td><td>&nbsp;</td><td class="sig-cell">_______________________</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+    <div class="warn" style="margin-top:1rem;"><strong>Note:</strong> This application was built directly from Procedure UNK-MIN-MIN-PRO-0002 Version 6.0 and verified against the procedure document. All critical safety steps are enforced by the application and cannot be bypassed. Paper forms run in parallel throughout the pilot period — safety is never dependent on the digital system during pilot phase.</div>
+  </div>
+
+</div>
+
+<div class="doc-footer">
+  <div class="df-l">Valterra Platinum · Unki Mine · SLAM Re-Entry App · Pilot Proposal · CONFIDENTIAL</div>
+  <div class="df-r">UNK-SHE-SLAM-PILOT-001 · App v1.0.0</div>
+</div>
+
+</div>
+</body>
+</html>
